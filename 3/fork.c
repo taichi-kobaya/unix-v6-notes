@@ -8,7 +8,7 @@ fork()
     register struct proc *p1, *p2;
 
     /* u は現在実行中プロセスのuser構造体。u_procpは自身のproc構造体へのポインタ（親側）*/
-    p1 = u.u_procp;
+    p1 = u.u_procp; // 実行プロセス（親プロセス）のproc構造体をp1に格納
 
     /*procテーブル（全NPROCエントリ）を走査し、未使用（p_stat == NULL)スロットを探す*/
     for(p2 = &proc[0]; p2 < &proc[NPROC]; p2++)
@@ -24,7 +24,7 @@ found:
     *newproc()でプロセス複製を行う。
     *複製後は親・子の両方がこの分岐を通過し、戻り値によって処理を分ける。
     * */
-    if(newproc()) {
+    if(newproc()) { // 親プロセスにはnewproc()から0が返って来る。よって偽になる。
         /* --- 子プロセス側の処理 --- */
         /*u_ar0はシステムコール復帰時にユーザー側レジスタへ書き戻される保存領域*/
         u.u_ar0[R0] = p1->p_pid;
